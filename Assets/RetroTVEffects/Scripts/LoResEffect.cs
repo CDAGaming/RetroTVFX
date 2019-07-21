@@ -57,9 +57,9 @@
             
             tempTex.filterMode = PointFilter ? FilterMode.Point : FilterMode.Bilinear;
 
-            this.MainCam.aspect = aspect;
-            this.MainCam.targetTexture = tempTex;
-            this.MainCam.Render();
+            MainCam.aspect = aspect;
+            MainCam.targetTexture = tempTex;
+            MainCam.Render();
 
             if (CamArray != null)
             {

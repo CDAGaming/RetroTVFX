@@ -219,11 +219,11 @@ namespace JetFistGames.RetroTVFX
         {
             if (Application.isPlaying)
             {
-                Destroy(this.material);
+                Destroy(material);
             }
             else
             {
-                DestroyImmediate(this.material);
+                DestroyImmediate(material);
             }
 
             antiFlickerEnabled = false;
@@ -251,56 +251,56 @@ namespace JetFistGames.RetroTVFX
         {
             if (EnableBurstCountAnimation)
             {
-                this.frameCount++;
-                this.frameCount %= 3;
+                frameCount++;
+                frameCount %= 3;
             }
 
             if (EnableRollingFlicker)
             {
-                this.flickerOffset += this.RollingVSyncTime;
+                flickerOffset += RollingVSyncTime;
             }
         }
 
         void ensureResources()
         {
-            if (this.rgb2yiq_mat == Matrix4x4.identity)
+            if (rgb2yiq_mat == Matrix4x4.identity)
             {
-                this.rgb2yiq_mat.SetRow(0, new Vector4(0.299f, 0.587f, 0.114f, 0f));
-                this.rgb2yiq_mat.SetRow(1, new Vector4(0.596f, -0.275f, -0.321f, 0f));
-                this.rgb2yiq_mat.SetRow(2, new Vector4(0.221f, -0.523f, 0.311f, 0f));
+                rgb2yiq_mat.SetRow(0, new Vector4(0.299f, 0.587f, 0.114f, 0f));
+                rgb2yiq_mat.SetRow(1, new Vector4(0.596f, -0.275f, -0.321f, 0f));
+                rgb2yiq_mat.SetRow(2, new Vector4(0.221f, -0.523f, 0.311f, 0f));
             }
 
-            if (this.yiq2rgb_mat == Matrix4x4.identity)
+            if (yiq2rgb_mat == Matrix4x4.identity)
             {
-                this.yiq2rgb_mat.SetRow(0, new Vector4(1f, 0.956f, 0.621f, 0f));
-                this.yiq2rgb_mat.SetRow(1, new Vector4(1f, -0.272f, -0.647f, 0f));
-                this.yiq2rgb_mat.SetRow(2, new Vector4(1f, -1.106f, 1.703f, 0f));
+                yiq2rgb_mat.SetRow(0, new Vector4(1f, 0.956f, 0.621f, 0f));
+                yiq2rgb_mat.SetRow(1, new Vector4(1f, -0.272f, -0.647f, 0f));
+                yiq2rgb_mat.SetRow(2, new Vector4(1f, -1.106f, 1.703f, 0f));
             }
 
-            if (this.material == null)
+            if (material == null)
             {
-                this.material = new Material(shader);
+                material = new Material(shader);
             }
 
-            material.SetMatrix("_RGB2YIQ_MAT", this.rgb2yiq_mat);
-            material.SetMatrix("_YIQ2RGB_MAT", this.yiq2rgb_mat);
+            material.SetMatrix("_RGB2YIQ_MAT", rgb2yiq_mat);
+            material.SetMatrix("_YIQ2RGB_MAT", yiq2rgb_mat);
 
-            material.SetTexture("_OverlayImg", this.TVOverlay);
+            material.SetTexture("_OverlayImg", TVOverlay);
 			
-            material.SetFloatArray("_LumaFilter", this.lumaFilter);
-            material.SetFloatArray("_ChromaFilter", this.chromaFilter);
+            material.SetFloatArray("_LumaFilter", lumaFilter);
+            material.SetFloatArray("_ChromaFilter", chromaFilter);
         }
 
         void OnRenderImage(RenderTexture src, RenderTexture dest)
         {
             ensureResources();
 
-            setKeyword("ANTI_FLICKER", this.AntiFlicker, ref this.antiFlickerEnabled);
-            setKeyword("ROLLING_FLICKER", this.EnableRollingFlicker, ref this.rollingFlickerEnabled);
-            setKeyword("PIXEL_MASK", this.EnablePixelMask, ref this.pixelMaskEnabled);
-            setKeyword("USE_TV_CURVATURE", this.EnableTVCurvature, ref this.tvCurvatureEnabled);
-            setKeyword("QUANTIZE_RGB", this.QuantizeRGB, ref this.quantizeRGBEnabled);
-            setKeyword("RF_SIGNAL", this.VideoMode == VideoType.RF, ref this.rfEnabled);
+            setKeyword("ANTI_FLICKER", AntiFlicker, ref antiFlickerEnabled);
+            setKeyword("ROLLING_FLICKER", EnableRollingFlicker, ref rollingFlickerEnabled);
+            setKeyword("PIXEL_MASK", EnablePixelMask, ref pixelMaskEnabled);
+            setKeyword("USE_TV_CURVATURE", EnableTVCurvature, ref tvCurvatureEnabled);
+            setKeyword("QUANTIZE_RGB", QuantizeRGB, ref quantizeRGBEnabled);
+            setKeyword("RF_SIGNAL", VideoMode == VideoType.RF, ref rfEnabled);
 
             if (compositeTemp == null || compositeTemp.width != DisplaySizeX || compositeTemp.height != DisplaySizeY)
             {
@@ -322,17 +322,17 @@ namespace JetFistGames.RetroTVFX
 			material.SetFloat("_Realtime", Time.realtimeSinceStartup);
 
             material.SetVector("_IQOffset", new Vector4(IQScale.x, IQScale.y, IQOffset.x, IQOffset.y));
-            material.SetMatrix("_RGB2YIQ_MAT", this.rgb2yiq_mat);
-            material.SetMatrix("_YIQ2RGB_MAT", this.yiq2rgb_mat);
+            material.SetMatrix("_RGB2YIQ_MAT", rgb2yiq_mat);
+            material.SetMatrix("_YIQ2RGB_MAT", yiq2rgb_mat);
 
-            material.SetFloat("_RFNoise", this.RFNoise);
-			material.SetFloat("_LumaSharpen", this.LumaSharpen);
+            material.SetFloat("_RFNoise", RFNoise);
+			material.SetFloat("_LumaSharpen", LumaSharpen);
 
-            material.SetInt("_Framecount", -this.frameCount);
+            material.SetInt("_Framecount", -frameCount);
             material.SetVector("_ScreenSize", new Vector4(DisplaySizeX, DisplaySizeY, 1f / DisplaySizeX, 1f / DisplaySizeY));
 
-            material.SetFloat("_RollingFlickerAmount", this.RollingFlickerFactor);
-            material.SetVector("_FlickerOffs", new Vector4(this.flickerOffset, this.flickerOffset + RollingVSyncTime, 0f, 0f));
+            material.SetFloat("_RollingFlickerAmount", RollingFlickerFactor);
+            material.SetVector("_FlickerOffs", new Vector4(flickerOffset, flickerOffset + RollingVSyncTime, 0f, 0f));
 
             material.SetVector("_PixelMaskScale", new Vector4(MaskRepeatX, MaskRepeatY));
             material.SetTexture("_PixelMask", PixelMaskTexture);
@@ -350,7 +350,7 @@ namespace JetFistGames.RetroTVFX
 
             RenderTexture final = pass1;
 
-            if (this.VideoMode == VideoType.Composite || this.VideoMode == VideoType.RF)
+            if (VideoMode == VideoType.Composite || VideoMode == VideoType.RF)
             {
                 Graphics.Blit(src, pass1);
 
@@ -366,7 +366,7 @@ namespace JetFistGames.RetroTVFX
 
 				final = pass2;
 			}
-            else if (this.VideoMode == VideoType.SVideo)
+            else if (VideoMode == VideoType.SVideo)
             {
                 Graphics.Blit(src, pass1);
 
@@ -379,15 +379,15 @@ namespace JetFistGames.RetroTVFX
 
                 Graphics.Blit(pass2, pass1, material, PASS_SVIDEO_DECODE);
             }
-            else if (this.VideoMode == VideoType.VGA)
+            else if (VideoMode == VideoType.VGA)
             {
                 Graphics.Blit(src, pass1, material, PASS_VGA);
             }
-            else if (this.VideoMode == VideoType.VGAFast)
+            else if (VideoMode == VideoType.VGAFast)
             {
                 final = src;
             }
-            else if (this.VideoMode == VideoType.Component)
+            else if (VideoMode == VideoType.Component)
             {
                 Graphics.Blit(src, pass1, material, PASS_COMPONENT);
             }

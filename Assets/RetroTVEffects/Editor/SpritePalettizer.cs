@@ -54,7 +54,7 @@ public class SpritePalettizer : EditorWindow
 
     void ShowSprite()
     {
-        Rect r = GUILayoutUtility.GetRect(this.position.width, 256f);
+        Rect r = GUILayoutUtility.GetRect(position.width, 256f);
         GUI.Box(r, "");
         EditorGUI.DrawTextureTransparent(r, Sprite.texture, ScaleMode.ScaleToFit);
     }
