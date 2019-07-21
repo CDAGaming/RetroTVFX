@@ -111,11 +111,13 @@ namespace UnityStandardAssets.ImageEffects
             supportHDRTextures = SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.ARGBHalf);
             supportDX11 = SystemInfo.graphicsShaderLevel >= 50 && SystemInfo.supportsComputeShaders;
 
-            if (!SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures)
+            // Disable if we don't support image effects or rendering textures
+            // Upgrade Note: Deprecated in Unity 2019
+            /*if (!SystemInfo.supportsImageEffects || !SystemInfo.supportsRenderTextures)
             {
                 NotSupported();
                 return false;
-            }
+            }*/
 
             if (needDepth && !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
             {

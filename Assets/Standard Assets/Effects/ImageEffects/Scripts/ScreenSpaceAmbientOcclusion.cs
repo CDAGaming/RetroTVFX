@@ -60,7 +60,8 @@ namespace UnityStandardAssets.ImageEffects
 
         void Start()
         {
-            if (!SystemInfo.supportsImageEffects || !SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
+            // Upgrade Note: SupportsImageEffects Deprecated and Always True in Unity 2019
+            if (/*!SystemInfo.supportsImageEffects || */!SystemInfo.SupportsRenderTextureFormat(RenderTextureFormat.Depth))
             {
                 m_Supported = false;
                 enabled = false;
