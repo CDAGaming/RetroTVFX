@@ -2,13 +2,12 @@
 {
 
     using UnityEngine;
-    using System.Collections;
 
     public class GraphicsUtils
     {
         private static Material defaultBlit = new Material(Shader.Find("Hidden/BlitCopy"));
 
-        public static void Blit( Rect rect, RenderTexture src, RenderTexture dest)
+        public static void Blit(Rect rect, RenderTexture src, RenderTexture dest)
         {
             Blit(rect, src, dest, defaultBlit, -1);
         }

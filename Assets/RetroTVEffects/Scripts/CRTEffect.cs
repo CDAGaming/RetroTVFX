@@ -3,9 +3,8 @@
 
 namespace JetFistGames.RetroTVFX
 {
-	
-	using UnityEngine;
-    using System.Collections;
+
+    using UnityEngine;
 
     public enum VideoType
     {
@@ -50,9 +49,9 @@ namespace JetFistGames.RetroTVFX
     {
         private const int PASS_COMPOSITE_ENCODE = 0;
         private const int PASS_COMPOSITE_DECODE = 1;
-		private const int PASS_COMPOSITE_FINAL = 2;
+        private const int PASS_COMPOSITE_FINAL = 2;
 
-		private const int PASS_VGA = 4;
+        private const int PASS_VGA = 4;
         private const int PASS_COMPONENT = 5;
 
         private const int PASS_SVIDEO_ENCODE = 6;
@@ -98,8 +97,8 @@ namespace JetFistGames.RetroTVFX
         [Range(0f, 2f)]
         public float RFNoise = 0.25f;
 
-		[Range(0f, 4f)]
-		public float LumaSharpen = 0f;
+        [Range(0f, 4f)]
+        public float LumaSharpen = 0f;
 
         public bool QuantizeRGB = false;
 
@@ -138,19 +137,19 @@ namespace JetFistGames.RetroTVFX
         private bool quantizeRGBEnabled = false;
         private bool rfEnabled = false;
 
-		#region Decode filter kernel
+        #region Decode filter kernel
 #if DECODE_FILTER_TAPS_8
-		private float[] lumaFilter =
-		{
-		   -0.0020f, -0.0009f, 0.0038f, 0.0178f, 0.0445f,
-			0.0817f, 0.1214f, 0.1519f, 0.1634f
-		};
+        private float[] lumaFilter =
+        {
+           -0.0020f, -0.0009f, 0.0038f, 0.0178f, 0.0445f,
+            0.0817f, 0.1214f, 0.1519f, 0.1634f
+        };
 
-		private float[] chromaFilter =
-		{
-			0.0046f, 0.0082f, 0.0182f, 0.0353f, 0.0501f,
-			0.0832f, 0.1062f, 0.1222f, 0.1280f
-		};
+        private float[] chromaFilter =
+        {
+            0.0046f, 0.0082f, 0.0182f, 0.0353f, 0.0501f,
+            0.0832f, 0.1062f, 0.1222f, 0.1280f
+        };
 #else
 		private float[] lumaFilter = new float[]
 		{
@@ -210,9 +209,9 @@ namespace JetFistGames.RetroTVFX
 			0.079052396f
 		};
 #endif
-		#endregion
+        #endregion
 
-		private Matrix4x4 rgb2yiq_mat = Matrix4x4.identity;
+        private Matrix4x4 rgb2yiq_mat = Matrix4x4.identity;
         private Matrix4x4 yiq2rgb_mat = Matrix4x4.identity;
 
         void OnDisable()
@@ -286,7 +285,7 @@ namespace JetFistGames.RetroTVFX
             material.SetMatrix("_YIQ2RGB_MAT", yiq2rgb_mat);
 
             material.SetTexture("_OverlayImg", TVOverlay);
-			
+
             material.SetFloatArray("_LumaFilter", lumaFilter);
             material.SetFloatArray("_ChromaFilter", chromaFilter);
         }
@@ -319,14 +318,14 @@ namespace JetFistGames.RetroTVFX
                 material.SetVector("_OneOverQuantizeRGB", oneOverQuantize);
             }
 
-			material.SetFloat("_Realtime", Time.realtimeSinceStartup);
+            material.SetFloat("_Realtime", Time.realtimeSinceStartup);
 
             material.SetVector("_IQOffset", new Vector4(IQScale.x, IQScale.y, IQOffset.x, IQOffset.y));
             material.SetMatrix("_RGB2YIQ_MAT", rgb2yiq_mat);
             material.SetMatrix("_YIQ2RGB_MAT", yiq2rgb_mat);
 
             material.SetFloat("_RFNoise", RFNoise);
-			material.SetFloat("_LumaSharpen", LumaSharpen);
+            material.SetFloat("_LumaSharpen", LumaSharpen);
 
             material.SetInt("_Framecount", -frameCount);
             material.SetVector("_ScreenSize", new Vector4(DisplaySizeX, DisplaySizeY, 1f / DisplaySizeX, 1f / DisplaySizeY));
@@ -339,12 +338,12 @@ namespace JetFistGames.RetroTVFX
             material.SetFloat("_Brightness", PixelMaskBrightness);
 
             material.SetFloat("_TVCurvature", Curvature);
-            
+
 
             RenderTexture pass1 = RenderTexture.GetTemporary(DisplaySizeX, DisplaySizeY, src.depth, RenderTextureFormat.ARGBHalf);
-			//pass1.filterMode = FilterMode.Point;
-			RenderTexture pass2 = RenderTexture.GetTemporary(DisplaySizeX, DisplaySizeY, src.depth, RenderTextureFormat.ARGBHalf);
-			//pass2.filterMode = FilterMode.Point;
+            //pass1.filterMode = FilterMode.Point;
+            RenderTexture pass2 = RenderTexture.GetTemporary(DisplaySizeX, DisplaySizeY, src.depth, RenderTextureFormat.ARGBHalf);
+            //pass2.filterMode = FilterMode.Point;
 
             RenderTexture lastComposite = RenderTexture.GetTemporary(DisplaySizeX, DisplaySizeY, src.depth, RenderTextureFormat.ARGBHalf);
 
@@ -354,18 +353,18 @@ namespace JetFistGames.RetroTVFX
             {
                 Graphics.Blit(src, pass1);
 
-				Graphics.Blit(pass1, pass2, material, PASS_COMPOSITE_ENCODE);
+                Graphics.Blit(pass1, pass2, material, PASS_COMPOSITE_ENCODE);
 
-				// pass last frame's signal and save current frame's signal
-				Graphics.Blit(compositeTemp, lastComposite);
-				Graphics.Blit(pass2, compositeTemp);
-				material.SetTexture("_LastCompositeTex", lastComposite);
-				
-				Graphics.Blit(pass2, pass1, material, PASS_COMPOSITE_DECODE);
-				Graphics.Blit(pass1, pass2, material, PASS_COMPOSITE_FINAL);
+                // pass last frame's signal and save current frame's signal
+                Graphics.Blit(compositeTemp, lastComposite);
+                Graphics.Blit(pass2, compositeTemp);
+                material.SetTexture("_LastCompositeTex", lastComposite);
 
-				final = pass2;
-			}
+                Graphics.Blit(pass2, pass1, material, PASS_COMPOSITE_DECODE);
+                Graphics.Blit(pass1, pass2, material, PASS_COMPOSITE_FINAL);
+
+                final = pass2;
+            }
             else if (VideoMode == VideoType.SVideo)
             {
                 Graphics.Blit(src, pass1);

@@ -1,7 +1,6 @@
 ﻿namespace JetFistGames.RetroTVFX
 {
     using UnityEngine;
-    using System.Collections;
 
     [ExecuteInEditMode]
     public class LoResEffect : MonoBehaviour
@@ -33,7 +32,7 @@
             }
         }
 
-        void createTempTex( int depth, RenderTextureFormat format )
+        void createTempTex(int depth, RenderTextureFormat format)
         {
             cleanupTempTex();
             tempTex = new RenderTexture(ScreenResX, ScreenResY, depth, format);
@@ -54,7 +53,7 @@
 
             float baseAspect = (float)ScreenResX / (float)ScreenResY;
             float aspect = OverrideAspect ? CamAspect : baseAspect;
-            
+
             tempTex.filterMode = PointFilter ? FilterMode.Point : FilterMode.Bilinear;
 
             MainCam.aspect = aspect;

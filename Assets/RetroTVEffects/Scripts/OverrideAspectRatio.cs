@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
@@ -12,7 +11,7 @@ public class OverrideAspectRatio : MonoBehaviour
 
     void LateUpdate()
     {
-       
+
     }
 
     void OnPreCull()

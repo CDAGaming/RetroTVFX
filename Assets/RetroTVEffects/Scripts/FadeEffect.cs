@@ -2,7 +2,6 @@
 {
 
     using UnityEngine;
-    using System.Collections;
 
     [ExecuteInEditMode]
     public class FadeEffect : MonoBehaviour
@@ -17,7 +16,7 @@
 
         [Range(0f, 1f)]
         public float FadeFactor = 0f;
-        
+
         private Material mat;
 
         void OnDisable()

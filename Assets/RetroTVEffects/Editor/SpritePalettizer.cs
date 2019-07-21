@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 
 class SpriteColorComparer : IEqualityComparer<Color32>
 {
@@ -68,7 +67,7 @@ public class SpritePalettizer : EditorWindow
 
         if (colorPalette == null) return;
 
-        GUILayout.Label("Found " + ( colorPalette.Length - 1 ) + " unique colors (plus transparency)");
+        GUILayout.Label("Found " + (colorPalette.Length - 1) + " unique colors (plus transparency)");
     }
 
     void calcPalette()
@@ -81,7 +80,7 @@ public class SpritePalettizer : EditorWindow
             importer.isReadable = true;
             importer.SaveAndReimport();
         }
-        
+
         Color32[] colors = Sprite.texture.GetPixels32();
 
         List<Color32> palette = new List<Color32>();

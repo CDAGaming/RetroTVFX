@@ -1,10 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-
+﻿using JetFistGames.RetroTVFX;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
-using JetFistGames.RetroTVFX;
 
 public class ToggleCRTEffects : MonoBehaviour
 {
@@ -16,7 +13,7 @@ public class ToggleCRTEffects : MonoBehaviour
     public Text ModeText;
 
     private bool toggle = true;
-    
+
     private VideoType currentMode = VideoType.RF;
 
     public void Toggle()
@@ -24,7 +21,7 @@ public class ToggleCRTEffects : MonoBehaviour
         toggle = !toggle;
 
         ToggleText.text = toggle ? "DISABLE CRT MODE" : "ENABLE CRT MODE";
-        
+
         CRTEffect.enabled = toggle;
         InputModule.FisheyeX = toggle ? CRTEffect.Curvature : 0f;
         InputModule.FisheyeY = toggle ? CRTEffect.Curvature : 0f;

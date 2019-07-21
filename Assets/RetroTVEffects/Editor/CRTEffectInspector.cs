@@ -1,10 +1,7 @@
-﻿using UnityEngine;
+﻿using JetFistGames.RetroTVFX;
 using UnityEditor;
-using System.Collections;
-
 using UnityEditor.AnimatedValues;
-
-using JetFistGames.RetroTVFX;
+using UnityEngine;
 
 [CustomEditor(typeof(CRTEffect))]
 public class CRTEffectInspector : Editor
@@ -45,9 +42,9 @@ public class CRTEffectInspector : Editor
     SerializedProperty bBits;
 
     SerializedProperty rfNoise;
-	SerializedProperty lumaSharpen;
+    SerializedProperty lumaSharpen;
 
-	AnimBool showTVCurvatureProperties;
+    AnimBool showTVCurvatureProperties;
     AnimBool showPixelMaskProperties;
     AnimBool showRollingFlickerProperties;
     AnimBool showNTSCFlickerProperties;
@@ -112,7 +109,7 @@ public class CRTEffectInspector : Editor
         iqScaleY = iqScale.FindPropertyRelative("y");
 
         rfNoise = serializedObject.FindProperty("RFNoise");
-		lumaSharpen = serializedObject.FindProperty("LumaSharpen");
+        lumaSharpen = serializedObject.FindProperty("LumaSharpen");
 
         showTVCurvatureProperties = newFoldout(enableCurvature.boolValue);
         showPixelMaskProperties = newFoldout(enablePixelMask.boolValue);
@@ -241,7 +238,7 @@ public class CRTEffectInspector : Editor
                 GUILayout.Space(10f);
             }
         }
-		
+
         using (var group = new EditorGUILayout.FadeGroupScope(showNTSCFlickerProperties.faded))
         {
             if (group.visible)
@@ -256,10 +253,10 @@ public class CRTEffectInspector : Editor
                 iqOffsetX.floatValue = EditorGUILayout.Slider("Chroma Offset X", iqOffsetX.floatValue, -0.5f, 0.5f);
                 iqOffsetY.floatValue = EditorGUILayout.Slider("Chroma Offset Y", iqOffsetY.floatValue, -0.5f, 0.5f);
 
-				if (videoMode.enumValueIndex == (int)VideoType.RF || videoMode.enumValueIndex == (int)VideoType.Composite)
-				{
-					lumaSharpen.floatValue = EditorGUILayout.Slider("Luma Sharpness", lumaSharpen.floatValue, 0f, 4f);
-				}
+                if (videoMode.enumValueIndex == (int)VideoType.RF || videoMode.enumValueIndex == (int)VideoType.Composite)
+                {
+                    lumaSharpen.floatValue = EditorGUILayout.Slider("Luma Sharpness", lumaSharpen.floatValue, 0f, 4f);
+                }
 
                 EditorGUI.indentLevel--;
 
