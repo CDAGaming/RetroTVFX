@@ -21,11 +21,13 @@ namespace UnityStandardAssets.ImageEffects
 
         override protected void Start()
         {
-            if (!SystemInfo.supportsRenderTextures)
+            // Disable if we don't support rendering textures
+            // Upgrade Note: Deprecated in Unity 2019
+            /*if (!SystemInfo.supportsRenderTextures)
             {
                 enabled = false;
                 return;
-            }
+            }*/
             base.Start();
         }
 
