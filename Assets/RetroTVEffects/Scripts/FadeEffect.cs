@@ -1,11 +1,9 @@
-﻿namespace JetFistGames.RetroTVFX
-{
+namespace JetFistGames.RetroTVFX {
 
     using UnityEngine;
 
     [ExecuteInEditMode]
-    public class FadeEffect : MonoBehaviour
-    {
+    public class FadeEffect : MonoBehaviour {
         [HideInInspector]
         public Shader FadeShader;
 
@@ -19,21 +17,18 @@
 
         private Material mat;
 
-        void OnDisable()
-        {
+        void OnDisable() {
             if (Application.isPlaying)
                 Destroy(mat);
             else
                 DestroyImmediate(mat);
         }
 
-        float eval(float input, float start, float end)
-        {
+        float eval(float input, float start, float end) {
             return Mathf.Clamp01((input - start) / (end - start));
         }
 
-        void OnRenderImage(RenderTexture src, RenderTexture dest)
-        {
+        void OnRenderImage(RenderTexture src, RenderTexture dest) {
             if (mat == null)
                 mat = new Material(FadeShader);
 

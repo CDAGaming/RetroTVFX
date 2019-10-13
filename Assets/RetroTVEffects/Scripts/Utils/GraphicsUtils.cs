@@ -1,24 +1,19 @@
-﻿namespace JetFistGames.RetroTVFX
-{
+namespace JetFistGames.RetroTVFX {
 
     using UnityEngine;
 
-    public class GraphicsUtils
-    {
+    public class GraphicsUtils {
         private static Material defaultBlit = new Material(Shader.Find("Hidden/BlitCopy"));
 
-        public static void Blit(Rect rect, RenderTexture src, RenderTexture dest)
-        {
+        public static void Blit(Rect rect, RenderTexture src, RenderTexture dest) {
             Blit(rect, src, dest, defaultBlit, -1);
         }
 
-        public static void Blit(RenderTexture src, RenderTexture dest, Material material, int pass)
-        {
+        public static void Blit(RenderTexture src, RenderTexture dest, Material material, int pass) {
             Blit(new Rect(0f, 0f, 1f, 1f), src, dest, material, pass);
         }
 
-        public static void Blit(Rect rect, RenderTexture src, RenderTexture dest, Material material, int pass)
-        {
+        public static void Blit(Rect rect, RenderTexture src, RenderTexture dest, Material material, int pass) {
             GL.PushMatrix();
             GL.LoadOrtho();
 

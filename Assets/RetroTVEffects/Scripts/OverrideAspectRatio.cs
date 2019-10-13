@@ -1,23 +1,19 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(Camera))]
-public class OverrideAspectRatio : MonoBehaviour
-{
+public class OverrideAspectRatio : MonoBehaviour {
     public bool OverrideAspect = true;
     public float AspectRatio = 1f;
 
     private Camera myCam;
 
-    void LateUpdate()
-    {
+    void LateUpdate() {
 
     }
 
-    void OnPreCull()
-    {
-        if (myCam == null)
-        {
+    void OnPreCull() {
+        if (myCam == null) {
             myCam = GetComponent<Camera>();
         }
 

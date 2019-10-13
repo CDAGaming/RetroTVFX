@@ -1,13 +1,11 @@
-﻿#define DECODE_FILTER_TAPS_8
+#define DECODE_FILTER_TAPS_8
 // #define DECODE_FILTER_TAPS_24
 
-namespace JetFistGames.RetroTVFX
-{
+namespace JetFistGames.RetroTVFX {
 
     using UnityEngine;
 
-    public enum VideoType
-    {
+    public enum VideoType {
         /// <summary>
         /// RF takes YIQ and muxes luma and chroma into a single signal (actually, real RF also includes audio)
         /// Real RF then modulates it with a radio wave carrier. It's subject to extra blurring and noise
@@ -45,8 +43,7 @@ namespace JetFistGames.RetroTVFX
     }
 
     [ExecuteInEditMode]
-    public class CRTEffect : MonoBehaviour
-    {
+    public class CRTEffect : MonoBehaviour {
         private const int PASS_COMPOSITE_ENCODE = 0;
         private const int PASS_COMPOSITE_DECODE = 1;
         private const int PASS_COMPOSITE_FINAL = 2;
@@ -139,89 +136,72 @@ namespace JetFistGames.RetroTVFX
 
         #region Decode filter kernel
 #if DECODE_FILTER_TAPS_8
-        private float[] lumaFilter =
-        {
-           -0.0020f, -0.0009f, 0.0038f, 0.0178f, 0.0445f,
-            0.0817f, 0.1214f, 0.1519f, 0.1634f
+        private float[] lumaFilter = {-0.0020f,
+            -0.0009f,
+            0.0038f,
+            0.0178f,
+            0.0445f,
+            0.0817f,
+            0.1214f,
+            0.1519f,
+            0.1634f
         };
 
-        private float[] chromaFilter =
-        {
-            0.0046f, 0.0082f, 0.0182f, 0.0353f, 0.0501f,
-            0.0832f, 0.1062f, 0.1222f, 0.1280f
+        private float[] chromaFilter = {
+            0.0046f,
+            0.0082f,
+            0.0182f,
+            0.0353f,
+            0.0501f,
+            0.0832f,
+            0.1062f,
+            0.1222f,
+            0.1280f
         };
 #else
-		private float[] lumaFilter = new float[]
-		{
-			-0.000012020f,
-			-0.000022146f,
-			-0.000013155f,
-			-0.000012020f,
-			-0.000049979f,
-			-0.000113940f,
-			-0.000122150f,
-			-0.000005612f,
-			0.000170516f,
-			0.000237199f,
-			0.000169640f,
-			0.000285688f,
-			0.000984574f,
-			0.002018683f,
-			0.002002275f,
-			-0.000909882f,
-			-0.007049081f,
-			-0.013222860f,
-			-0.012606931f,
-			0.002460860f,
-			0.035868225f,
-			0.084016453f,
-			0.135563500f,
-			0.175261268f,
-			0.190176552f
-		};
+        private float[] lumaFilter = new float[] {
+            -0.000012020f, -0.000022146f, -0.000013155f, -0.000012020f, -0.000049979f, -0.000113940f, -0.000122150f, -0.000005612f,
+            0.000170516f,
+            0.000237199f,
+            0.000169640f,
+            0.000285688f,
+            0.000984574f,
+            0.002018683f,
+            0.002002275f, -0.000909882f, -0.007049081f, -0.013222860f, -0.012606931f,
+            0.002460860f,
+            0.035868225f,
+            0.084016453f,
+            0.135563500f,
+            0.175261268f,
+            0.190176552f
+        };
 
-		private float[] chromaFilter = new float[]
-		{
-			-0.000118847f,
-			-0.000271306f,
-			-0.000502642f,
-			-0.000930833f,
-			-0.001451013f,
-			-0.002064744f,
-			-0.002700432f,
-			-0.003241276f,
-			-0.003524948f,
-			-0.003350284f,
-			-0.002491729f,
-			-0.000721149f,
-			0.002164659f,
-			0.006313635f,
-			0.011789103f,
-			0.018545660f,
-			0.026414396f,
-			0.035100710f,
-			0.044196567f,
-			0.053207202f,
-			0.061590275f,
-			0.068803602f,
-			0.074356193f,
-			0.077856564f,
-			0.079052396f
-		};
+        private float[] chromaFilter = new float[] {
+            -0.000118847f, -0.000271306f, -0.000502642f, -0.000930833f, -0.001451013f, -0.002064744f, -0.002700432f, -0.003241276f, -0.003524948f, -0.003350284f, -0.002491729f, -0.000721149f,
+            0.002164659f,
+            0.006313635f,
+            0.011789103f,
+            0.018545660f,
+            0.026414396f,
+            0.035100710f,
+            0.044196567f,
+            0.053207202f,
+            0.061590275f,
+            0.068803602f,
+            0.074356193f,
+            0.077856564f,
+            0.079052396f
+        };
 #endif
         #endregion
 
         private Matrix4x4 rgb2yiq_mat = Matrix4x4.identity;
         private Matrix4x4 yiq2rgb_mat = Matrix4x4.identity;
 
-        void OnDisable()
-        {
-            if (Application.isPlaying)
-            {
+        void OnDisable() {
+            if (Application.isPlaying) {
                 Destroy(material);
-            }
-            else
-            {
+            } else {
                 DestroyImmediate(material);
             }
 
@@ -232,8 +212,7 @@ namespace JetFistGames.RetroTVFX
             quantizeRGBEnabled = false;
             rfEnabled = false;
 
-            if (compositeTemp != null)
-            {
+            if (compositeTemp != null) {
                 if (Application.isPlaying)
                     Destroy(compositeTemp);
                 else
@@ -241,43 +220,35 @@ namespace JetFistGames.RetroTVFX
             }
         }
 
-        void Update()
-        {
+        void Update() {
             ensureResources();
         }
 
-        void LateUpdate()
-        {
-            if (EnableBurstCountAnimation)
-            {
+        void LateUpdate() {
+            if (EnableBurstCountAnimation) {
                 frameCount++;
                 frameCount %= 3;
             }
 
-            if (EnableRollingFlicker)
-            {
+            if (EnableRollingFlicker) {
                 flickerOffset += RollingVSyncTime;
             }
         }
 
-        void ensureResources()
-        {
-            if (rgb2yiq_mat == Matrix4x4.identity)
-            {
+        void ensureResources() {
+            if (rgb2yiq_mat == Matrix4x4.identity) {
                 rgb2yiq_mat.SetRow(0, new Vector4(0.299f, 0.587f, 0.114f, 0f));
                 rgb2yiq_mat.SetRow(1, new Vector4(0.596f, -0.275f, -0.321f, 0f));
                 rgb2yiq_mat.SetRow(2, new Vector4(0.221f, -0.523f, 0.311f, 0f));
             }
 
-            if (yiq2rgb_mat == Matrix4x4.identity)
-            {
+            if (yiq2rgb_mat == Matrix4x4.identity) {
                 yiq2rgb_mat.SetRow(0, new Vector4(1f, 0.956f, 0.621f, 0f));
                 yiq2rgb_mat.SetRow(1, new Vector4(1f, -0.272f, -0.647f, 0f));
                 yiq2rgb_mat.SetRow(2, new Vector4(1f, -1.106f, 1.703f, 0f));
             }
 
-            if (material == null)
-            {
+            if (material == null) {
                 material = new Material(shader);
             }
 
@@ -290,8 +261,7 @@ namespace JetFistGames.RetroTVFX
             material.SetFloatArray("_ChromaFilter", chromaFilter);
         }
 
-        void OnRenderImage(RenderTexture src, RenderTexture dest)
-        {
+        void OnRenderImage(RenderTexture src, RenderTexture dest) {
             ensureResources();
 
             setKeyword("ANTI_FLICKER", AntiFlicker, ref antiFlickerEnabled);
@@ -301,16 +271,14 @@ namespace JetFistGames.RetroTVFX
             setKeyword("QUANTIZE_RGB", QuantizeRGB, ref quantizeRGBEnabled);
             setKeyword("RF_SIGNAL", VideoMode == VideoType.RF, ref rfEnabled);
 
-            if (compositeTemp == null || compositeTemp.width != DisplaySizeX || compositeTemp.height != DisplaySizeY)
-            {
+            if (compositeTemp == null || compositeTemp.width != DisplaySizeX || compositeTemp.height != DisplaySizeY) {
                 if (compositeTemp != null)
                     RenderTexture.ReleaseTemporary(compositeTemp);
 
                 compositeTemp = RenderTexture.GetTemporary(DisplaySizeX, DisplaySizeY, src.depth, RenderTextureFormat.ARGBHalf);
             }
 
-            if (QuantizeRGB)
-            {
+            if (QuantizeRGB) {
                 Vector4 quantize = new Vector4(Mathf.Pow(2f, RBits), Mathf.Pow(2f, GBits), Mathf.Pow(2f, BBits), 1f);
                 Vector4 oneOverQuantize = new Vector4(1f / quantize.x, 1f / quantize.y, 1f / quantize.z, 1f);
 
@@ -339,7 +307,6 @@ namespace JetFistGames.RetroTVFX
 
             material.SetFloat("_TVCurvature", Curvature);
 
-
             RenderTexture pass1 = RenderTexture.GetTemporary(DisplaySizeX, DisplaySizeY, src.depth, RenderTextureFormat.ARGBHalf);
             //pass1.filterMode = FilterMode.Point;
             RenderTexture pass2 = RenderTexture.GetTemporary(DisplaySizeX, DisplaySizeY, src.depth, RenderTextureFormat.ARGBHalf);
@@ -349,8 +316,7 @@ namespace JetFistGames.RetroTVFX
 
             RenderTexture final = pass1;
 
-            if (VideoMode == VideoType.Composite || VideoMode == VideoType.RF)
-            {
+            if (VideoMode == VideoType.Composite || VideoMode == VideoType.RF) {
                 Graphics.Blit(src, pass1);
 
                 Graphics.Blit(pass1, pass2, material, PASS_COMPOSITE_ENCODE);
@@ -364,9 +330,7 @@ namespace JetFistGames.RetroTVFX
                 Graphics.Blit(pass1, pass2, material, PASS_COMPOSITE_FINAL);
 
                 final = pass2;
-            }
-            else if (VideoMode == VideoType.SVideo)
-            {
+            } else if (VideoMode == VideoType.SVideo) {
                 Graphics.Blit(src, pass1);
 
                 Graphics.Blit(pass1, pass2, material, PASS_SVIDEO_ENCODE);
@@ -377,38 +341,28 @@ namespace JetFistGames.RetroTVFX
                 material.SetTexture("_LastCompositeTex", lastComposite);
 
                 Graphics.Blit(pass2, pass1, material, PASS_SVIDEO_DECODE);
-            }
-            else if (VideoMode == VideoType.VGA)
-            {
+            } else if (VideoMode == VideoType.VGA) {
                 Graphics.Blit(src, pass1, material, PASS_VGA);
-            }
-            else if (VideoMode == VideoType.VGAFast)
-            {
+            } else if (VideoMode == VideoType.VGAFast) {
                 final = src;
-            }
-            else if (VideoMode == VideoType.Component)
-            {
+            } else if (VideoMode == VideoType.Component) {
                 Graphics.Blit(src, pass1, material, PASS_COMPONENT);
             }
 
             //Graphics.Blit(final, dest, material, PASS_TV_OVERLAY);
             if (StretchToDisplay)
                 blitQuad(final, dest, material, PASS_TV_OVERLAY);
-            else
-            {
-                float screenAspect = (float)Screen.width / (float)Screen.height;
+            else {
+                float screenAspect = (float) Screen.width / (float) Screen.height;
 
-                if (screenAspect < AspectRatio)
-                {
+                if (screenAspect < AspectRatio) {
                     // fit to screen width
                     float width = 1f;
                     float height = screenAspect / AspectRatio;
                     float heightDiff = 1f - height;
 
                     blitQuad(new Rect(0f, heightDiff * 0.5f, width, height), final, dest, material, PASS_TV_OVERLAY);
-                }
-                else
-                {
+                } else {
                     // fit to screen height
                     float height = 1f;
                     float width = (1f / screenAspect) * AspectRatio;
@@ -423,10 +377,8 @@ namespace JetFistGames.RetroTVFX
             RenderTexture.ReleaseTemporary(lastComposite);
         }
 
-        private void setKeyword(string keyword, bool enabled, ref bool keywordEnabled)
-        {
-            if (enabled != keywordEnabled)
-            {
+        private void setKeyword(string keyword, bool enabled, ref bool keywordEnabled) {
+            if (enabled != keywordEnabled) {
                 if (enabled)
                     material.EnableKeyword(keyword);
                 else
@@ -436,13 +388,11 @@ namespace JetFistGames.RetroTVFX
             keywordEnabled = enabled;
         }
 
-        private void blitQuad(RenderTexture src, RenderTexture dest, Material material, int pass)
-        {
+        private void blitQuad(RenderTexture src, RenderTexture dest, Material material, int pass) {
             blitQuad(new Rect(0f, 0f, 1f, 1f), src, dest, material, pass);
         }
 
-        private void blitQuad(Rect rect, RenderTexture src, RenderTexture dest, Material material, int pass)
-        {
+        private void blitQuad(Rect rect, RenderTexture src, RenderTexture dest, Material material, int pass) {
             GL.PushMatrix();
             GL.LoadOrtho();
 

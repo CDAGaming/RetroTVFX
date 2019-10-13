@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class AudioHumEffect : MonoBehaviour
-{
+public class AudioHumEffect : MonoBehaviour {
     public int HumCycle = 60;
 
     [Range(0f, 0.001f)]
@@ -17,16 +16,13 @@ public class AudioHumEffect : MonoBehaviour
     private System.Random rand = new System.Random();
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         sampleRate = AudioSettings.outputSampleRate;
     }
 
-    void OnAudioFilterRead(float[] data, int channels)
-    {
+    void OnAudioFilterRead(float[] data, int channels) {
         float increment = HumCycle * Mathf.PI / sampleRate;
-        for (int i = 0; i < data.Length; i += channels)
-        {
+        for (int i = 0; i < data.Length; i += channels) {
             phase += increment;
 
             float val = Mathf.Sin(phase);
@@ -35,11 +31,10 @@ public class AudioHumEffect : MonoBehaviour
 
             val *= HumAmount;
 
-            float noise = (float)((rand.NextDouble() * 2.0) - 1.0);
+            float noise = (float) ((rand.NextDouble() * 2.0) - 1.0);
             noise *= NoiseAmount;
 
-            for (int c = 0; c < channels; c++)
-            {
+            for (int c = 0; c < channels; c++) {
                 data[i + c] += val + noise;
             }
 
