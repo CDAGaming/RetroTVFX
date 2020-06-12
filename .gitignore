@@ -10,6 +10,9 @@ Assets/AssetStoreTools*
 .vs/
 .vscode/
 
+# IntelliJ
+.idea/
+
 # Gradle cache directory
 .gradle/
 
